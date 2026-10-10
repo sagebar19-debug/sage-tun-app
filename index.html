@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sage Tun - Authentification</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #030712;
+            color: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 1. ARRIERE-PLAN AVEC TEXTES SAGE TUN QUI BOUGERONT */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .sage-text {
+            position: absolute;
+            font-weight: 900;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+
+        .t1 { color: #00f0ff; top: 8%; left: 5%; animation: float1 6s infinite alternate ease-in-out; }
+        .t2 { color: #ff0055; top: 20%; right: 5%; animation: float2 5s infinite alternate ease-in-out; }
+        .t3 { color: #00ff66; bottom: 15%; left: 8%; animation: float2 7s infinite alternate ease-in-out; }
+        .t4 { color: #ffcc00; bottom: 8%; right: 10%; animation: float1 8s infinite alternate ease-in-out; }
+        .t5 { color: #b026ff; top: 48%; left: 3%; animation: float1 9s infinite alternate ease-in-out; }
+        .t6 { color: #ff6600; top: 52%; right: 3%; animation: float2 6s infinite alternate ease-in-out; }
+
+        @keyframes float1 {
+            0% { transform: translate(0, 0) rotate(-5deg); }
+            100% { transform: translate(80px, 120px) rotate(8deg); }
+        }
+
+        @keyframes float2 {
+            0% { transform: translate(0, 0) rotate(5deg); }
+            100% { transform: translate(-90px, -100px) rotate(-10deg); }
+        }
+
+        /* 2. BOITE MODALE PRINCIPALE */
+        .modal-card {
+            background: rgba(30, 41, 59, 0.98);
+            border: 2px solid #3b82f6;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 380px;
+            padding: 22px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+            position: relative;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .modal-icon {
+            font-size: 22px;
+            background: rgba(59, 130, 246, 0.2);
+            padding: 6px 10px;
+            border-radius: 8px;
+        }
+
+        .modal-header h3 {
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .modal-message {
+            color: #94a3b8;
+            font-size: 0.88rem;
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+
+        /* BLOC HWID */
+        .hwid-container {
+            background: #0f172a;
+            border: 1px dashed #334155;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 16px;
+        }
+
+        .hwid-label {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .hwid-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+        }
+
+        .hwid-text {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #38bdf8;
+            word-break: break-all;
+        }
+
+        .btn-copy {
+            background: #334155;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 5px 8px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* INPUT & BOUTON */
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: #2563eb;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* 3. ANIMATION D'ERREUR ROUGE ET VIBRATION */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-12px); }
+            40%, 80% { transform: translateX(12px); }
+        }
+
+        .error-mode {
+            animation: shake 0.4s ease-in-out;
+            border-color: #ef4444 !important;
+            background: rgba(127, 29, 29, 0.98) !important;
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.8) !important;
+        }
+
+        .input-error {
+            border-color: #ef4444 !important;
+            background: #450a0a !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Arrière-plan animé -->
+    <div class="bg-container">
+        <div class="sage-text t1">SAGE TUN</div>
+        <div class="sage-text t2">SAGE TUN</div>
+        <div class="sage-text t3">SAGE TUN</div>
+        <div class="sage-text t4">SAGE TUN</div>
+        <div class="sage-text t5">SAGE TUN</div>
+        <div class="sage-text t6">SAGE TUN</div>
+    </div>
+
+    <!-- Modale d'Authentification -->
+    <div class="modal-card" id="modalCard">
+        <div class="modal-header">
+            <div class="modal-icon">🔑</div>
+            <h3>BIENVENUE CHEZ SAGE TUN</h3>
+        </div>
+        
+        <p id="modalMessage" class="modal-message">
+            Veuillez saisir votre jeton d'accès fourni par l'admin.
+        </p>
+
+        <div class="hwid-container">
+            <div class="hwid-label">VOTRE IDENTIFIANT (HWID) :</div>
+            <div class="hwid-box">
+                <span id="displayHWID" class="hwid-text">Génération...</span>
+                <button type="button" class="btn-copy" onclick="copierHWID(this)">📋 Copier</button>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="tokenInput" placeholder="Saisissez votre jeton ici..." autocomplete="off">
+        </div>
+
+        <button class="btn-primary" onclick="validerJeton()">Valider le jeton</button>
+    </div>
+
+    <script>
+        const API_URL = "https://votre-serveur.com/api/check_token.php";
+
+        // Obtenir le HWID
+        function getHWID() {
+            let hwid = localStorage.getItem("device_hwid");
+            if (!hwid) {
+                hwid = "HWID-" + Math.random().toString(36).substring(2, 8).toUpperCase() + "-" + Date.now().toString(36).toUpperCase();
+                localStorage.setItem("device_hwid", hwid);
+            }
+            return hwid;
+        }
+
+        // Affichage initial du HWID
+        document.getElementById("displayHWID").textContent = getHWID();
+
+        // Jouer le son d'erreur Tintin
+        function jouerSon() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(120, ctx.currentTime);
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.25);
+            } catch(e) {}
+        }
+
+        // Action de validation
+        function validerJeton() {
+            const input = document.getElementById("tokenInput");
+            const token = input.value.trim();
+
+            if (token === "") {
+                declencherErreur("Veuillez saisir un jeton valide !");
+                return;
+            }
+
+            // Envoi au serveur PHP
+            fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: token, hwid: getHWID() })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "success") {
+                    localStorage.setItem("user_token", token);
+                    alert("Accès autorisé !");
+                } else {
+                    declencherErreur(data.message || "Jeton incorrect !");
+                }
+            })
+            .catch(() => {
+                // Si l'URL serveur n'est pas configurée, simuler l'erreur d'accès
+                declencherErreur("Jeton invalide ou serveur inaccessible !");
+            });
+        }
+
+        // Déclencher l'erreur visuelle rouge + son
+        function declencherErreur(msg) {
+            const card = document.getElementById("modalCard");
+            const input = document.getElementById("tokenInput");
+            document.getElementById("modalMessage").textContent = msg;
+
+            jouerSon();
+
+            card.classList.add("error-mode");
+            input.classList.add("input-error");
+
+            setTimeout(() => {
+                card.classList.remove("error-mode");
+                input.classList.remove("input-error");
+            }, 1200);
+        }
+
+        // Copier HWID
+        function copierHWID(btn) {
+            const txt = document.getElementById("displayHWID").textContent;
+            navigator.clipboard.writeText(txt).then(() => {
+                btn.textContent = "✓ Copié";
+                setTimeout(() => btn.textContent = "📋 Copier", 2000);
+            });
+        }
+    </script>
+</body>
+  </html>
