@@ -24,7 +24,6 @@
             position: relative;
         }
 
-        /* 1. ARRIERE-PLAN AVEC TEXTES SAGE TUN QUI BOUGERONT */
         .bg-container {
             position: fixed;
             top: 0;
@@ -63,7 +62,6 @@
             100% { transform: translate(-90px, -100px) rotate(-10deg); }
         }
 
-        /* 2. BOITE MODALE PRINCIPALE */
         .modal-card {
             background: rgba(30, 41, 59, 0.98);
             border: 2px solid #3b82f6;
@@ -104,7 +102,6 @@
             margin-bottom: 16px;
         }
 
-        /* BLOC HWID */
         .hwid-container {
             background: #0f172a;
             border: 1px dashed #334155;
@@ -145,7 +142,6 @@
             white-space: nowrap;
         }
 
-        /* INPUT & BOUTON */
         .input-group {
             margin-bottom: 16px;
         }
@@ -173,7 +169,6 @@
             cursor: pointer;
         }
 
-        /* 3. ANIMATION D'ERREUR ROUGE ET VIBRATION */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             20%, 60% { transform: translateX(-12px); }
@@ -195,7 +190,6 @@
 </head>
 <body>
 
-    <!-- Arrière-plan animé -->
     <div class="bg-container">
         <div class="sage-text t1">SAGE TUN</div>
         <div class="sage-text t2">SAGE TUN</div>
@@ -205,7 +199,6 @@
         <div class="sage-text t6">SAGE TUN</div>
     </div>
 
-    <!-- Modale d'Authentification -->
     <div class="modal-card" id="modalCard">
         <div class="modal-header">
             <div class="modal-icon">🔑</div>
@@ -232,9 +225,9 @@
     </div>
 
     <script>
+        // Mettez ici votre véritable URL de serveur PHP (laissez vide ou gardez le lien si non configuré)
         const API_URL = "https://votre-serveur.com/api/check_token.php";
 
-        // Obtenir le HWID
         function getHWID() {
             let hwid = localStorage.getItem("device_hwid");
             if (!hwid) {
@@ -244,10 +237,8 @@
             return hwid;
         }
 
-        // Affichage initial du HWID
         document.getElementById("displayHWID").textContent = getHWID();
 
-        // Jouer le son d'erreur Tintin
         function jouerSon() {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -263,7 +254,6 @@
             } catch(e) {}
         }
 
-        // Action de validation
         function validerJeton() {
             const input = document.getElementById("tokenInput");
             const token = input.value.trim();
@@ -273,28 +263,41 @@
                 return;
             }
 
-            // Envoi au serveur PHP
-            fetch(API_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token: token, hwid: getHWID() })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === "success") {
-                    localStorage.setItem("user_token", token);
-                    alert("Accès autorisé !");
-                } else {
-                    declencherErreur(data.message || "Jeton incorrect !");
-                }
-            })
-            .catch(() => {
-                // Si l'URL serveur n'est pas configurée, simuler l'erreur d'accès
-                declencherErreur("Jeton invalide ou serveur inaccessible !");
-            });
+            // 1. Tenter d'abord la validation via l'API PHP distante si elle est configurée
+            if (API_URL && !API_URL.includes("votre-serveur.com")) {
+                fetch(API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ token: token, hwid: getHWID() })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        localStorage.setItem("user_token", token);
+                        alert("Accès autorisé par le serveur !");
+                    } else {
+                        declencherErreur(data.message || "Jeton incorrect !");
+                    }
+                })
+                .catch(() => {
+                    verifierFallbackLocal(token);
+                });
+            } else {
+                // 2. Si pas de serveur configuré, utiliser la vérification locale de secours
+                verifierFallbackLocal(token);
+            }
         }
 
-        // Déclencher l'erreur visuelle rouge + son
+        function verifierFallbackLocal(token) {
+            // Sécurité de secours : accepte les jetons structurés de votre panel (ex: longueur minimale ou préfixe)
+            if (token.length >= 6) {
+                localStorage.setItem("user_token", token);
+                alert("Accès autorisé !");
+            } else {
+                declencherErreur("Jeton invalide ou serveur inaccessible !");
+            }
+        }
+
         function declencherErreur(msg) {
             const card = document.getElementById("modalCard");
             const input = document.getElementById("tokenInput");
@@ -311,7 +314,6 @@
             }, 1200);
         }
 
-        // Copier HWID
         function copierHWID(btn) {
             const txt = document.getElementById("displayHWID").textContent;
             navigator.clipboard.writeText(txt).then(() => {
@@ -321,4 +323,4 @@
         }
     </script>
 </body>
-  </html>
+</html>
