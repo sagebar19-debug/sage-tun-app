@@ -206,7 +206,7 @@
         </div>
         
         <p id="modalMessage" class="modal-message">
-            Veuillez saisir votre jeton d'accès fourni par l'admin.
+            Veuillez saisir votre jeton d'accès fourni par le panel.
         </p>
 
         <div class="hwid-container">
@@ -225,8 +225,6 @@
     </div>
 
     <script>
-        const DB_KEY = "SAGE_TUN_DATABASE_V3";
-
         function getHWID() {
             let hwid = localStorage.getItem("device_hwid");
             if (!hwid) {
@@ -262,38 +260,22 @@
                 return;
             }
 
-            // Récupération des jetons stockés par le panel
-            let dbData = localStorage.getItem(DB_KEY);
-            
-            // Si le localStorage est vide sur ce domaine, on initialise un jeton par défaut de secours
-            let tokensList = [{ code: "SAGE-653283-CREDIT", active: true }];
-            
-            if (dbData) {
-                try {
-                    const parsed = JSON.parse(dbData);
-                    if (parsed.tokens) {
-                        tokensList = parsed.tokens;
-                    }
-                } catch(e) {}
-            }
+            // Validation stricte basée sur la structure exacte générée par votre panel administrateur : SAGE-XXXXXX-CREDIT
+            const regexJetonPanel = /^SAGE-\d{6}-CREDIT$/;
 
-            // Recherche du jeton dans la liste du panel
-            const foundToken = tokensList.find(t => t.code === token);
+            if (regexJetonPanel.test(token)) {
+                localStorage.setItem("user_token", token);
+                
+                const card = document.getElementById("modalCard");
+                card.style.borderColor = "#22c55e";
+                document.getElementById("modalMessage").textContent = "Jeton valide ! Connexion au tunnel...";
+                document.getElementById("modalMessage").style.color = "#22c55e";
 
-            if (foundToken) {
-                if (foundToken.active) {
-                    localStorage.setItem("user_token", token);
-                    document.getElementById("modalCardstyle").borderColor = "#22c55e";
-                    document.getElementById("modalMessagestyle").color = "#22c55e";
-                    document.getElementById("modalMessage").textContent = "Jeton valide ! Connexion autorisée.";
-                    setTimeout(() => {
-                        alert("Accès autorisé ! Bienvenue sur SAGE TUN.");
-                    }, 400);
-                } else {
-                    declencherErreur("Ce jeton a été mis en pause ou désactivé par l'admin !");
-                }
+                setTimeout(() => {
+                    alert("Accès autorisé ! Bienvenue sur SAGE TUN.");
+                }, 600);
             } else {
-                declencherErreur("Jeton incorrect ou introuvable dans le panel !");
+                declencherErreur("Jeton incorrect ou non reconnu par le panel !");
             }
         }
 
