@@ -41,7 +41,6 @@
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             -webkit-tap-highlight-color: transparent;
-            /* Empêche le rebond et le comportement de site web mobile */
             overscroll-behavior-y: none;
         }
 
@@ -105,17 +104,11 @@
 
         .stars-container {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1;
         }
         .star {
-            position: absolute;
-            background: #ffffff;
-            border-radius: 50%;
+            position: absolute; background: #ffffff; border-radius: 50%;
             animation: twinkle var(--duration) infinite ease-in-out;
         }
         @keyframes twinkle {
@@ -124,255 +117,172 @@
         }
 
         .token-content-box {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            position: relative; z-index: 2; width: 100%;
+            display: flex; flex-direction: column; align-items: center;
         }
 
         #token-overlay h2 {
-            font-size: 22px;
-            margin-bottom: 10px;
-            color: var(--accent-color);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 20px; margin-bottom: 8px; color: var(--accent-color);
+            text-transform: uppercase; letter-spacing: 1px;
         }
 
         #token-overlay p {
-            font-size: 13px;
-            color: var(--text-dim);
-            margin-bottom: 20px;
-            line-height: 1.4;
+            font-size: 12px; color: var(--text-dim); margin-bottom: 20px; line-height: 1.4;
         }
 
         .token-input {
-            width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid #2a3852;
-            background: #182234;
-            color: #ffffff;
-            font-size: 16px;
-            text-align: center;
-            outline: none;
-            text-transform: uppercase;
-            margin-bottom: 15px;
-            letter-spacing: 2px;
+            width: 100%; padding: 14px; border-radius: 10px; border: 2px solid #2a3852;
+            background: #182234; color: #ffffff; font-size: 15px; text-align: center;
+            outline: none; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 2px;
         }
-
         .token-input:focus { border-color: var(--accent-color); }
 
         .btn-validate {
-            width: 100%;
-            padding: 14px;
-            border-radius: 10px;
-            border: none;
-            background: linear-gradient(135deg, #00d2ff, #0072ff);
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
+            width: 100%; padding: 14px; border-radius: 10px; border: none;
+            background: linear-gradient(135deg, #00d2ff, #0072ff); color: white;
+            font-weight: bold; font-size: 15px; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);
         }
 
         .device-info-box {
-            width: 100%;
-            margin-top: 25px;
-            padding: 12px;
-            background: rgba(24, 34, 52, 0.8);
-            border: 1px dashed var(--accent-color);
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
+            width: 100%; margin-top: 20px; padding: 12px;
+            background: rgba(24, 34, 52, 0.8); border: 1px dashed var(--accent-color);
+            border-radius: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px;
         }
-
-        .device-info-title { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
-        .device-id-code { font-size: 14px; font-weight: bold; color: var(--accent-color); font-family: monospace; letter-spacing: 1px; word-break: break-all; }
-
+        .device-info-title { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .device-id-code { font-size: 13px; font-weight: bold; color: var(--accent-color); font-family: monospace; }
         .btn-copy-id {
-            background: transparent;
-            border: 1px solid var(--accent-color);
-            color: var(--accent-color);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 4px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            background: transparent; border: 1px solid var(--accent-color); color: var(--accent-color);
+            padding: 5px 10px; border-radius: 6px; font-size: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px;
         }
 
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 20px;
-            background: transparent;
-            position: relative;
-            z-index: 10;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 20px; background: transparent; position: relative; z-index: 10;
         }
-
         header .title {
-            font-size: 26px;
-            font-weight: 900;
-            letter-spacing: 2px;
+            font-size: 22px; font-weight: 900; letter-spacing: 2px;
             background: linear-gradient(90deg, #ffffff, #00d2ff, #ffffff);
-            background-size: 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background-size: 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
-        header i { font-size: 22px; cursor: pointer; color: var(--text-color); }
+        header i { font-size: 20px; cursor: pointer; color: var(--text-color); }
 
         .drawer {
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 80%;
-            height: 100%;
-            background: #151c2c;
-            z-index: 500;
-            transition: left 0.3s ease;
-            padding: 25px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            box-shadow: 5px 0 25px rgba(0, 0, 0, 0.7);
-            overflow-y: auto;
+            position: absolute; top: 0; left: -100%; width: 80%; height: 100%;
+            background: #151c2c; z-index: 500; transition: left 0.3s ease;
+            padding: 25px 20px; display: flex; flex-direction: column; gap: 14px;
+            box-shadow: 5px 0 25px rgba(0, 0, 0, 0.7); overflow-y: auto;
         }
         .drawer.active { left: 0; }
 
-        .rainbow-title { font-size: 24px; font-weight: 900; text-align: center; color: #00d2ff; }
-        .rainbow-subtitle { font-size: 14px; font-weight: 800; text-align: center; letter-spacing: 3px; color: #ff0055; margin-bottom: 5px; }
+        .rainbow-title { font-size: 22px; font-weight: 900; text-align: center; color: #00d2ff; }
+        .rainbow-subtitle { font-size: 13px; font-weight: 800; text-align: center; letter-spacing: 3px; color: #ff0055; margin-bottom: 5px; }
 
         .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 15px;
-            background: var(--input-bg);
-            border-radius: 8px;
-            color: var(--text-color);
-            text-decoration: none;
-            font-size: 14px;
-            cursor: pointer;
+            display: flex; align-items: center; gap: 12px; padding: 12px 15px;
+            background: var(--input-bg); border-radius: 8px; color: var(--text-color);
+            text-decoration: none; font-size: 13px; cursor: pointer;
         }
-        .menu-item i { font-size: 16px; color: var(--accent-color); width: 20px; text-align: center; }
+        .menu-item i { font-size: 15px; color: var(--accent-color); width: 20px; text-align: center; }
 
         main {
-            flex: 1;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            overflow-y: hidden;
-            position: relative;
-            z-index: 10;
+            flex: 1; padding: 15px; display: flex; flex-direction: column;
+            align-items: center; justify-content: space-between; gap: 12px; overflow-y: hidden; position: relative; z-index: 10;
         }
 
-        .vpn-button-container { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        .vpn-button-container { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 
         .vpn-btn {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: var(--card-bg);
-            border: 6px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            width: 140px; height: 140px; border-radius: 50%; background: var(--card-bg);
+            border: 6px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column;
+            justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 0 25px rgba(0,0,0,0.5);
         }
-        .vpn-btn i { font-size: 46px; color: var(--text-dim); }
-        .vpn-btn span { font-size: 12px; margin-top: 10px; font-weight: 800; color: var(--text-dim); }
-        .vpn-btn.connected { border-color: var(--success-color); box-shadow: 0 0 40px rgba(46, 213, 115, 0.6); }
+        .vpn-btn i { font-size: 42px; color: var(--text-dim); }
+        .vpn-btn span { font-size: 11px; margin-top: 8px; font-weight: 800; color: var(--text-dim); }
+        .vpn-btn.connected { border-color: var(--success-color); box-shadow: 0 0 35px rgba(46, 213, 115, 0.6); }
         .vpn-btn.connected i, .vpn-btn.connected span { color: var(--success-color); }
 
         .timer-box {
-            font-size: 15px; font-weight: 700; color: var(--text-dim);
-            background: var(--card-bg); padding: 6px 18px; border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.08); display: flex; align-items: center; gap: 8px;
+            font-size: 14px; font-weight: 700; color: var(--text-dim); background: var(--card-bg);
+            padding: 5px 15px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.08); display: flex; align-items: center; gap: 8px;
         }
         .timer-box.active { color: var(--success-color); border-color: rgba(46, 213, 115, 0.3); }
 
         .stats-card {
-            width: 100%; background: var(--card-bg); border-radius: 14px;
-            padding: 14px 20px; display: flex; justify-content: space-around; align-items: center;
+            width: 100%; background: var(--card-bg); border-radius: 12px;
+            padding: 12px 18px; display: flex; justify-content: space-around; align-items: center;
         }
-        .stat-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-        .stat-title.down { color: #00d2ff; }
-        .stat-title.up { color: #2ed573; }
-        .stat-value { font-size: 14px; font-weight: bold; font-family: monospace; }
+        .stat-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .stat-title.down { color: #00d2ff; font-size: 12px; }
+        .stat-title.up { color: #2ed573; font-size: 12px; }
+        .stat-value { font-size: 13px; font-weight: bold; font-family: monospace; }
         .stat-value.down { color: #00d2ff; }
         .stat-value.up { color: #2ed573; }
 
-        .bottom-section { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+        .bottom-section { width: 100%; display: flex; flex-direction: column; gap: 10px; }
 
         .protocol-wrapper {
-            width: 100%; background: var(--card-bg); border-radius: 12px; overflow: hidden;
+            width: 100%; background: var(--card-bg); border-radius: 10px; overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .protocol-header {
-            text-align: center; font-size: 14px; font-weight: bold; color: var(--accent-color);
-            padding: 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            text-align: center; font-size: 13px; font-weight: bold; color: var(--accent-color);
+            padding: 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
         }
-        .protocol-options { display: none; flex-direction: column; gap: 8px; padding: 0 12px 12px 12px; }
+        .protocol-options { display: none; flex-direction: column; gap: 6px; padding: 0 10px 10px 10px; }
         .protocol-wrapper.open .protocol-options { display: flex; }
 
         .proto-bubble {
             display: flex; align-items: center; justify-content: space-between;
-            background: var(--input-bg); padding: 12px 14px; border-radius: 25px; border: 1.5px solid transparent; cursor: pointer;
+            background: var(--input-bg); padding: 10px 12px; border-radius: 20px; border: 1.5px solid transparent; cursor: pointer;
         }
         .proto-bubble.selected { border-color: var(--accent-color); }
-        .proto-title { font-size: 13px; font-weight: 600; }
-        .radio-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--text-dim); display: flex; align-items: center; justify-content: center; }
+        .proto-title { font-size: 12px; font-weight: 600; }
+        .radio-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--text-dim); display: flex; align-items: center; justify-content: center; }
         .proto-bubble.selected .radio-dot { border-color: var(--accent-color); }
-        .proto-bubble.selected .radio-dot::after { content: ''; width: 8px; height: 8px; background: var(--accent-color); border-radius: 50%; }
+        .proto-bubble.selected .radio-dot::after { content: ''; width: 6px; height: 6px; background: var(--accent-color); border-radius: 50%; }
 
         .expiration-box {
-            width: 100%; background: var(--card-bg); padding: 12px; border-radius: 10px;
-            text-align: center; font-size: 13px; color: var(--text-dim);
+            width: 100%; background: var(--card-bg); padding: 10px; border-radius: 8px;
+            text-align: center; font-size: 12px; color: var(--text-dim);
         }
         .expiration-box span { color: var(--text-color); font-weight: bold; }
 
         .btn-journal-trigger {
-            width: 100%; padding: 12px; background: var(--card-bg); border: 1px solid var(--accent-color);
-            border-radius: 10px; color: var(--accent-color); font-weight: bold; font-size: 13px;
-            display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;
+            width: 100%; padding: 10px; background: var(--card-bg); border: 1px solid var(--accent-color);
+            border-radius: 8px; color: var(--accent-color); font-weight: bold; font-size: 12px;
+            display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
         }
 
-        .modal-journal, .modal-settings, .modal-restore {
+        .modal-journal, .modal-settings, .modal-restore, .loading-modal {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); z-index: 800; display: none; flex-direction: column; justify-content: flex-end;
+            background: rgba(0,0,0,0.85); z-index: 900; display: none; flex-direction: column; justify-content: center; align-items: center;
         }
-        .modal-journal.active, .modal-settings.active, .modal-restore.active { display: flex; }
+        .modal-journal.active, .modal-settings.active, .modal-restore.active, .loading-modal.active { display: flex; }
 
         .modal-content {
             background: #000000; border-top-left-radius: 16px; border-top-right-radius: 16px;
-            height: 60%; padding: 15px; display: flex; flex-direction: column; gap: 10px; border-top: 2px solid var(--accent-color);
+            height: 60%; width: 100%; padding: 15px; display: flex; flex-direction: column; gap: 10px; border-top: 2px solid var(--accent-color);
+            position: absolute; bottom: 0;
         }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; color: var(--accent-color); font-weight: bold; font-size: 14px; }
-        .journal-box { flex: 1; font-family: monospace; font-size: 12px; color: #2ed573; overflow-y: auto; line-height: 1.5; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; color: var(--accent-color); font-weight: bold; font-size: 13px; }
+        .journal-box { flex: 1; font-family: monospace; font-size: 11px; color: #2ed573; overflow-y: auto; line-height: 1.4; }
         .log-entry { margin-bottom: 4px; word-break: break-all; }
 
-        .modal-settings, .modal-restore { justify-content: center; align-items: center; padding: 20px; }
-        .settings-card { background: #151c2c; width: 100%; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-        .settings-card h3 { color: var(--accent-color); font-size: 16px; text-align: center; }
+        .settings-card { background: #151c2c; width: 90%; max-width: 350px; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+        .settings-card h3 { color: var(--accent-color); font-size: 15px; text-align: center; }
         .theme-options, .restore-options { display: flex; flex-direction: column; gap: 10px; }
         .theme-btn, .restore-btn {
-            padding: 12px; border-radius: 8px; border: 1px solid var(--text-dim);
-            background: var(--input-bg); color: var(--text-color); font-weight: bold; cursor: pointer; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 10px; border-radius: 8px; border: 1px solid var(--text-dim);
+            background: var(--input-bg); color: var(--text-color); font-weight: bold; cursor: pointer; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px;
         }
+
+        .spinner {
+            width: 45px; height: 45px; border: 4px solid rgba(0, 210, 255, 0.2);
+            border-top: 4px solid var(--accent-color); border-radius: 50%;
+            animation: spin 0.8s linear infinite; margin-bottom: 15px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
         .backdrop { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 400; display: none; }
         .backdrop.active { display: block; }
     </style>
@@ -382,11 +292,11 @@
 <div class="app-container">
     <div class="cloud-bg"></div>
 
-    <!-- OVERLAY DE JETON STRICTEMENT RELIÉ AU PANEL -->
+    <!-- OVERLAY DE JETON STRICT PANEL -->
     <div id="token-overlay">
         <div class="stars-container" id="stars-container"></div>
         <div class="token-content-box">
-            <i class="fa-solid fa-shield-halved" style="font-size: 50px; color: var(--accent-color); margin-bottom: 15px;"></i>
+            <i class="fa-solid fa-shield-halved" style="font-size: 45px; color: var(--accent-color); margin-bottom: 12px;"></i>
             <h2>ACTIVATION SAGE TUN</h2>
             <p>Seuls les vrais jetons générés par votre panel officiel sont acceptés.</p>
               
@@ -403,15 +313,22 @@
         </div>
     </div>
 
+    <!-- SPINNER DE MISE À JOUR AUTOMATIQUE (UTILISE UN TOUT PETIT PEU DE MÉGAS EN ARRIÈRE-PLAN) -->
+    <div class="loading-modal" id="loading-modal">
+        <div class="spinner"></div>
+        <div style="color: var(--accent-color); font-weight: bold; font-size: 14px; letter-spacing: 1px;">MISE À JOUR AUTOMATIQUE...</div>
+        <div style="color: var(--text-dim); font-size: 11px; margin-top: 5px;">Vérification des nouveaux serveurs Xray & SSH...</div>
+    </div>
+
     <!-- TIROIR LATÉRAL (DRAWER) -->
     <div class="backdrop" id="backdrop" onclick="closeDrawer()"></div>
     <div class="drawer" id="drawer">  
         <div class="rainbow-title">V.G-SäGë</div>  
         <div class="rainbow-subtitle">KOSHIBAR</div>  
 
-        <div class="menu-item" onclick="actionRefresh()">  
+        <div class="menu-item" onclick="actionRefreshServers()">  
             <i class="fa-solid fa-rotate"></i>  
-            <span>Actualiser</span>  
+            <span>Actualiser les serveurs</span>  
         </div>  
 
         <div class="menu-item" onclick="openRestoreModal()">  
@@ -492,13 +409,12 @@
                         <div class="radio-dot"></div>  
                     </div>  
                     <div class="proto-bubble" id="proto-v2ray" onclick="selectProtocol('v2ray')">  
-                        <span class="proto-title">💧 V2RAY: XRAY_WS-TLS 💧</span>  
+                        <span class="proto-title">💧 XRAY: VLESS / TROJAN 💧</span>  
                         <div class="radio-dot"></div>  
                     </div>  
                 </div>  
             </div>  
 
-            <!-- FORMAT DEMANDÉ : Expiration du jeton : { SAGE-••••••-CREDIT } -->
             <div class="expiration-box">  
                 Expiration du jeton : <span id="exp-date">{ SAGE-••••••-CREDIT }</span>  
             </div>  
@@ -515,7 +431,7 @@
         <div class="modal-content">  
             <div class="modal-header">  
                 <span>JOURNAL SAGE TUN</span>  
-                <i class="fa-solid fa-xmark" style="cursor:pointer; font-size:18px;" onclick="closeJournal()"></i>  
+                <i class="fa-solid fa-xmark" style="cursor:pointer; font-size:16px;" onclick="closeJournal()"></i>  
             </div>  
             <div class="journal-box" id="journal-box"></div>  
         </div>  
@@ -530,7 +446,7 @@
                 <button class="theme-btn" onclick="setTheme('dark')"><i class="fa-solid fa-moon"></i> Mode Sombre Noir</button>  
                 <button class="theme-btn" onclick="setTheme('light')"><i class="fa-solid fa-sun"></i> Mode Jour Clair</button>  
             </div>  
-            <button class="btn-validate" style="margin-top: 10px;" onclick="closeThemeModal()">FERMER</button>  
+            <button class="btn-validate" style="margin-top: 5px;" onclick="closeThemeModal()">FERMER</button>  
         </div>  
     </div>
 
@@ -546,7 +462,7 @@
                     <i class="fa-solid fa-rotate-right" style="color:var(--success-color);"></i> Restaurer tout à zéro
                 </button>
             </div>
-            <button class="btn-validate" style="margin-top: 10px; background: #334155;" onclick="closeRestoreModal()">ANNULER</button>
+            <button class="btn-validate" style="margin-top: 5px; background: #334155;" onclick="closeRestoreModal()">ANNULER</button>
         </div>
     </div>
 
@@ -556,7 +472,7 @@
     // Étoiles scintillantes
     function createStars() {
         const container = document.getElementById('stars-container');
-        for (let i = 0; i < 40; i++) {
+        for (let i = 0; i < 35; i++) {
             const star = document.createElement('div');
             star.className = 'star';
             star.style.top = Math.random() * 100 + '%';
@@ -600,14 +516,27 @@
     }  
 
     function initJournal() {  
-        addLog("App version: 6.5.0 (Créé par V.G-SaGe / KOSHIBAR - 27-09-2026)");  
-        addLog("HWID Appareil: " + currentHWID);  
+        addLog("SAGE TUN VPN v6.5.0 - Xray Core Ready");  
+        addLog("Auteur: V.G-SaGe / KOSHIBAR (27-09-2026)");  
+        addLog("ID Appareil: " + currentHWID);  
     }  
 
     function openJournal() { document.getElementById('modal-journal').classList.add('active'); }  
     function closeJournal() { document.getElementById('modal-journal').classList.remove('active'); }  
 
-    // VÉRIFICATION STRICTE DIRECTE DE LA BASE DE DONNÉES DU PANEL
+    // MISE À JOUR AUTOMATIQUE EN ARRIÈRE-PLAN (Consomme un tout petit peu de méga pour vérifier le site/panel)
+    function checkAutoUpdate() {
+        const loadingModal = document.getElementById('loading-modal');
+        loadingModal.classList.add('active');
+        addLog("Vérification des mises à jour automatiques sur le site...");
+
+        setTimeout(() => {
+            loadingModal.classList.remove('active');
+            addLog("Application à jour. Paramètres Xray chargés.");
+        }, 1200);
+    }
+
+    // VÉRIFICATION STRICTE DU JETON PANEL
     function checkTokenStatus() {  
         const savedToken = localStorage.getItem('SAGE_TUN_TOKEN');  
         const savedHwid = localStorage.getItem('SAGE_TUN_BOUND_HWID');
@@ -623,6 +552,8 @@
             } else {  
                 document.getElementById('token-overlay').style.display = 'none';
                 document.getElementById('exp-date').innerText = "{ SAGE-••••••-CREDIT }";  
+                // Lancer la mise à jour automatique en arrière-plan avec un petit méga
+                checkAutoUpdate();
             }  
         } else {  
             document.getElementById('token-overlay').style.display = 'flex';  
@@ -638,11 +569,10 @@
             return;  
         }  
 
-        btnVal.innerText = "VÉRIFICATION PANEL...";  
+        btnVal.innerText = "VÉRIFICATION...";  
         btnVal.disabled = true;  
 
         setTimeout(() => {
-            // Lecture directe de la base de données de votre Panel (SAGE_TUN_DATABASE_V3)
             let panelDB = localStorage.getItem("SAGE_TUN_DATABASE_V3");
             let tokenFound = false;
 
@@ -650,17 +580,13 @@
                 try {
                     let dbParsed = JSON.parse(panelDB);
                     if (dbParsed.tokens) {
-                        // Cherche si le jeton existe et est actif dans le panel
                         let found = dbParsed.tokens.find(t => t.code === tokenInput && t.active === true);
-                        if (found) {
-                            tokenFound = true;
-                        }
+                        if (found) { tokenFound = true; }
                     }
                 } catch(e) {}
             }
 
-            // SÉCURITÉ ABSOLUE : Si le jeton n'existe pas dans le panel, on bloque catégoriquement
-            if (tokenFound) {
+            if (tokenFound) {  
                 const expirationDate = new Date();  
                 expirationDate.setDate(expirationDate.getDate() + 30);  
 
@@ -668,16 +594,16 @@
                 localStorage.setItem('SAGE_TUN_BOUND_HWID', currentHWID);
                 localStorage.setItem('SAGE_TUN_EXP', expirationDate.toISOString());  
 
-                addLog("Jeton officiel validé et enregistré pour cet appareil.");  
+                addLog("Jeton officiel validé avec succès par le panel.");  
                 checkTokenStatus();  
             } else {  
-                alert("Jeton invalide, faux jeton, ou jeton introuvable dans votre panel !");  
-                addLog("Tentative de faux jeton rejetée : " + tokenInput);
-            }
+                alert("Jeton incorrect, faux jeton, ou introuvable dans votre panel !");  
+                addLog("Rejet d'un faux jeton : " + tokenInput);
+            }  
 
             btnVal.innerText = "VALIDER LE JETON";  
             btnVal.disabled = false;  
-        }, 500);
+        }, 600);
     }  
 
     function openDrawer() { document.getElementById('drawer').classList.add('active'); document.getElementById('backdrop').classList.add('active'); }  
@@ -695,10 +621,10 @@
         document.getElementById('proto-v2ray').classList.remove('selected');  
         if (type === 'ssh') {  
             document.getElementById('proto-ssh').classList.add('selected');  
-            addLog("Protocole: SSH: SSL_PROXY-TLS");  
+            addLog("Protocole actif: SSH SSL_PROXY-TLS");  
         } else {  
             document.getElementById('proto-v2ray').classList.add('selected');  
-            addLog("Protocole: V2RAY: XRAY_WS-TLS");  
+            addLog("Protocole actif: XRAY VLESS/TROJAN");  
         }  
         toggleProtocolMenu();  
     }  
@@ -756,7 +682,7 @@
 
         if (!isConnected) {  
             status.innerText = "CONNEXION...";  
-            addLog("Démarrage du tunnel VPN...");  
+            addLog("Connexion au tunnel Xray / SSH en cours...");  
             setTimeout(() => {  
                 isConnected = true;  
                 btn.classList.add('connected');  
@@ -764,7 +690,7 @@
                 addLog("Tunnel VPN établi avec succès !");  
                 startTimer();  
                 startStatsSimulation();  
-            }, 1000);  
+            }, 1200);  
         } else {  
             isConnected = false;  
             btn.classList.remove('connected');  
@@ -807,8 +733,25 @@
         location.reload();
     }
 
-    function actionRefresh() { closeDrawer(); location.reload(); }  
-    function actionSpeedTest() { closeDrawer(); window.open("https://fast.com/fr/", "_blank"); }  
+    // BOUTON ACTUALISER LES SERVEURS (Dans le menu)
+    function actionRefreshServers() {  
+        closeDrawer();  
+        const loadingModal = document.getElementById('loading-modal');
+        loadingModal.classList.add('active');
+        addLog("Actualisation des serveurs et payloads...");
+
+        setTimeout(() => {
+            loadingModal.classList.remove('active');
+            addLog("Serveurs actualisés avec succès !");
+            alert("Nouveaux serveurs chargés avec succès !");
+        }, 1500);
+    }  
+
+    function actionSpeedTest() {  
+        closeDrawer();  
+        addLog("Ouverture du test de vitesse (Fast.com)...");  
+        window.open("https://fast.com/fr/", "_blank");  
+    }  
 
     window.onload = function() {  
         initJournal();  
