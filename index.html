@@ -225,8 +225,7 @@
     </div>
 
     <script>
-        // Mettez ici votre véritable URL de serveur PHP (laissez vide ou gardez le lien si non configuré)
-        const API_URL = "https://votre-serveur.com/api/check_token.php";
+        const DB_KEY = "SAGE_TUN_DATABASE_V3";
 
         function getHWID() {
             let hwid = localStorage.getItem("device_hwid");
@@ -263,38 +262,38 @@
                 return;
             }
 
-            // 1. Tenter d'abord la validation via l'API PHP distante si elle est configurée
-            if (API_URL && !API_URL.includes("votre-serveur.com")) {
-                fetch(API_URL, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ token: token, hwid: getHWID() })
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === "success") {
-                        localStorage.setItem("user_token", token);
-                        alert("Accès autorisé par le serveur !");
-                    } else {
-                        declencherErreur(data.message || "Jeton incorrect !");
+            // Récupération des jetons stockés par le panel
+            let dbData = localStorage.getItem(DB_KEY);
+            
+            // Si le localStorage est vide sur ce domaine, on initialise un jeton par défaut de secours
+            let tokensList = [{ code: "SAGE-653283-CREDIT", active: true }];
+            
+            if (dbData) {
+                try {
+                    const parsed = JSON.parse(dbData);
+                    if (parsed.tokens) {
+                        tokensList = parsed.tokens;
                     }
-                })
-                .catch(() => {
-                    verifierFallbackLocal(token);
-                });
-            } else {
-                // 2. Si pas de serveur configuré, utiliser la vérification locale de secours
-                verifierFallbackLocal(token);
+                } catch(e) {}
             }
-        }
 
-        function verifierFallbackLocal(token) {
-            // Sécurité de secours : accepte les jetons structurés de votre panel (ex: longueur minimale ou préfixe)
-            if (token.length >= 6) {
-                localStorage.setItem("user_token", token);
-                alert("Accès autorisé !");
+            // Recherche du jeton dans la liste du panel
+            const foundToken = tokensList.find(t => t.code === token);
+
+            if (foundToken) {
+                if (foundToken.active) {
+                    localStorage.setItem("user_token", token);
+                    document.getElementById("modalCardstyle").borderColor = "#22c55e";
+                    document.getElementById("modalMessagestyle").color = "#22c55e";
+                    document.getElementById("modalMessage").textContent = "Jeton valide ! Connexion autorisée.";
+                    setTimeout(() => {
+                        alert("Accès autorisé ! Bienvenue sur SAGE TUN.");
+                    }, 400);
+                } else {
+                    declencherErreur("Ce jeton a été mis en pause ou désactivé par l'admin !");
+                }
             } else {
-                declencherErreur("Jeton invalide ou serveur inaccessible !");
+                declencherErreur("Jeton incorrect ou introuvable dans le panel !");
             }
         }
 
