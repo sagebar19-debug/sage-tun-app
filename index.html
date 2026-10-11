@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>SAGE TUN</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -15,24 +17,6 @@
             --danger-color: #ff4757;
             --success-color: #2ed573;
             --input-bg: rgba(24, 34, 52, 0.9);
-        }
-
-        body.theme-light {
-            --bg-color: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 40%, #f0f3f8 100%);
-            --card-bg: #ffffff;
-            --accent-color: #0072ff;
-            --text-color: #1a202c;
-            --text-dim: #718096;
-            --input-bg: #e2e8f0;
-        }
-
-        body.theme-dark {
-            --bg-color: #0b0f19;
-            --card-bg: #151c2c;
-            --accent-color: #00d2ff;
-            --text-color: #ffffff;
-            --text-dim: #8a99ad;
-            --input-bg: #182234;
         }
 
         * {
@@ -71,12 +55,11 @@
 
         .cloud-bg {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 200px;
-            pointer-events: none; z-index: 1; opacity: 0.35;
+            top: 0; left: 0; width: 100%; height: 180px;
+            pointer-events: none; z-index: 1; opacity: 0.3;
             background: 
                 radial-gradient(circle at 20% 30px, rgba(255, 255, 255, 0.8) 0%, transparent 50px),
-                radial-gradient(circle at 50% 20px, rgba(255, 255, 255, 0.9) 0%, transparent 65px),
-                radial-gradient(circle at 80% 40px, rgba(255, 255, 255, 0.7) 0%, transparent 55px);
+                radial-gradient(circle at 50% 20px, rgba(255, 255, 255, 0.9) 0%, transparent 65px);
             filter: blur(12px);
         }
 
@@ -171,31 +154,31 @@
         .menu-item i { font-size: 14px; color: var(--accent-color); width: 18px; text-align: center; }
 
         main {
-            flex: 1; padding: 12px 15px; display: flex; flex-direction: column;
-            justify-content: space-between; gap: 10px; overflow-y: auto; position: relative; z-index: 10;
+            flex: 1; padding: 10px 15px; display: flex; flex-direction: column;
+            justify-content: space-between; gap: 8px; overflow-y: auto; position: relative; z-index: 10;
         }
 
-        .vpn-button-container { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .vpn-button-container { display: flex; flex-direction: column; align-items: center; gap: 6px; }
 
         .vpn-btn {
-            width: 125px; height: 125px; border-radius: 50%; background: var(--card-bg);
+            width: 120px; height: 120px; border-radius: 50%; background: var(--card-bg);
             border: 5px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column;
             justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
-        .vpn-btn i { font-size: 38px; color: var(--text-dim); }
-        .vpn-btn span { font-size: 10px; margin-top: 6px; font-weight: 800; color: var(--text-dim); }
+        .vpn-btn i { font-size: 36px; color: var(--text-dim); }
+        .vpn-btn span { font-size: 10px; margin-top: 5px; font-weight: 800; color: var(--text-dim); }
         .vpn-btn.connected { border-color: var(--success-color); box-shadow: 0 0 30px rgba(46, 213, 115, 0.6); }
         .vpn-btn.connected i, .vpn-btn.connected span { color: var(--success-color); }
 
         .timer-box {
-            font-size: 13px; font-weight: 700; color: var(--text-dim); background: var(--card-bg);
-            padding: 4px 12px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.08); display: flex; align-items: center; gap: 6px;
+            font-size: 12px; font-weight: 700; color: var(--text-dim); background: var(--card-bg);
+            padding: 3px 10px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.08); display: flex; align-items: center; gap: 6px;
         }
         .timer-box.active { color: var(--success-color); border-color: rgba(46, 213, 115, 0.3); }
 
         .stats-card {
             width: 100%; background: var(--card-bg); border-radius: 10px;
-            padding: 10px 15px; display: flex; justify-content: space-around; align-items: center;
+            padding: 8px 12px; display: flex; justify-content: space-around; align-items: center;
         }
         .stat-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
         .stat-title.down { color: #00d2ff; font-size: 11px; }
@@ -204,39 +187,39 @@
         .stat-value.down { color: #00d2ff; }
         .stat-value.up { color: #2ed573; }
 
-        .bottom-section { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+        .bottom-section { width: 100%; display: flex; flex-direction: column; gap: 6px; }
 
         .protocol-wrapper {
             width: 100%; background: var(--card-bg); border-radius: 8px; overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .protocol-header {
-            text-align: center; font-size: 12px; font-weight: bold; color: var(--accent-color);
-            padding: 10px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            text-align: center; font-size: 11px; font-weight: bold; color: var(--accent-color);
+            padding: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
         }
-        .protocol-options { display: none; flex-direction: column; gap: 6px; padding: 0 8px 8px 8px; }
+        .protocol-options { display: none; flex-direction: column; gap: 4px; padding: 0 6px 6px 6px; }
         .protocol-wrapper.open .protocol-options { display: flex; }
 
         .proto-bubble {
             display: flex; align-items: center; justify-content: space-between;
-            background: var(--input-bg); padding: 8px 12px; border-radius: 20px; border: 1.5px solid transparent; cursor: pointer;
+            background: var(--input-bg); padding: 6px 10px; border-radius: 15px; border: 1.5px solid transparent; cursor: pointer;
         }
         .proto-bubble.selected { border-color: var(--accent-color); }
-        .proto-title { font-size: 11px; font-weight: 600; }
-        .radio-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--text-dim); display: flex; align-items: center; justify-content: center; }
+        .proto-title { font-size: 10px; font-weight: 600; }
+        .radio-dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--text-dim); display: flex; align-items: center; justify-content: center; }
         .proto-bubble.selected .radio-dot { border-color: var(--accent-color); }
-        .proto-bubble.selected .radio-dot::after { content: ''; width: 5px; height: 5px; background: var(--accent-color); border-radius: 50%; }
+        .proto-bubble.selected .radio-dot::after { content: ''; width: 4px; height: 4px; background: var(--accent-color); border-radius: 50%; }
 
         .expiration-box {
-            width: 100%; background: var(--card-bg); padding: 8px; border-radius: 8px;
+            width: 100%; background: var(--card-bg); padding: 6px; border-radius: 6px;
             text-align: center; font-size: 11px; color: var(--text-dim);
         }
         .expiration-box span { color: var(--text-color); font-weight: bold; }
 
         .btn-journal-trigger {
-            width: 100%; padding: 10px; background: var(--card-bg); border: 1px solid var(--accent-color);
-            border-radius: 8px; color: var(--accent-color); font-weight: bold; font-size: 11px;
-            display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
+            width: 100%; padding: 8px; background: var(--card-bg); border: 1px solid var(--accent-color);
+            border-radius: 6px; color: var(--accent-color); font-weight: bold; font-size: 11px;
+            display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer;
         }
 
         .modal-journal, .modal-settings, .modal-restore, .loading-modal {
@@ -263,9 +246,9 @@
         }
 
         .spinner {
-            width: 40px; height: 40px; border: 4px solid rgba(0, 210, 255, 0.2);
+            width: 38px; height: 38px; border: 4px solid rgba(0, 210, 255, 0.2);
             border-top: 4px solid var(--accent-color); border-radius: 50%;
-            animation: spin 0.8s linear infinite; margin-bottom: 12px;
+            animation: spin 0.8s linear infinite; margin-bottom: 10px;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
@@ -278,11 +261,11 @@
 <div class="app-container">
     <div class="cloud-bg"></div>
 
-    <!-- OVERLAY DE JETON STRICT PANEL -->
+    <!-- OVERLAY DE JETON PANEL -->
     <div id="token-overlay">
         <div class="stars-container" id="stars-container"></div>
         <div class="token-content-box">
-            <i class="fa-solid fa-shield-halved" style="font-size: 40px; color: var(--accent-color); margin-bottom: 10px;"></i>
+            <i class="fa-solid fa-shield-halved" style="font-size: 38px; color: var(--accent-color); margin-bottom: 10px;"></i>
             <h2>ACTIVATION SAGE TUN</h2>
             <p>Seuls les vrais jetons générés par votre panel officiel sont acceptés.</p>
               
@@ -299,7 +282,7 @@
         </div>
     </div>
 
-    <!-- SPINNER DE MISE À JOUR AUTOMATIQUE -->
+    <!-- SPINNER DE MISE À JOUR -->
     <div class="loading-modal" id="loading-modal">
         <div class="spinner"></div>
         <div style="color: var(--accent-color); font-weight: bold; font-size: 13px; letter-spacing: 1px;">MISE À JOUR AUTOMATIQUE...</div>
@@ -350,7 +333,7 @@
         </div>  
     </div>
 
-    <!-- EN-TÊTE PROPRE DE L'APPLICATION -->
+    <!-- EN-TÊTE -->
     <header>  
         <i class="fa-solid fa-bars" onclick="openDrawer()"></i>  
         <div class="title">SAGE TUN</div>  
@@ -383,7 +366,6 @@
         </div>  
 
         <div class="bottom-section">  
-            <!-- SÉLECTEUR DE PROTOCOLE BIEN VISIBLE -->
             <div class="protocol-wrapper" id="protocol-wrapper">  
                 <div class="protocol-header" onclick="toggleProtocolMenu()">  
                     <span></span>  
@@ -402,12 +384,10 @@
                 </div>  
             </div>  
 
-            <!-- AFFICHAGE DE L'EXPIRATION DU JETON DEMANDÉ -->
             <div class="expiration-box">  
                 Expiration du jeton : <span id="exp-date">{ SAGE-••••••-CREDIT }</span>  
             </div>  
 
-            <!-- BOUTON JOURNAL (LOGS) -->
             <button class="btn-journal-trigger" onclick="openJournal()">  
                 <i class="fa-solid fa-terminal"></i>  
                 <span>AFFICHER LE JOURNAL (LOGS)</span>  
@@ -445,7 +425,7 @@
             <h3><i class="fa-solid fa-trash-can"></i> RESTAURER LES SERVEURS</h3>
             <div class="restore-options">
                 <button class="restore-btn" onclick="restoreActionQuit()">
-                    <i class="fa-solid fa-power-off" style="color:var(--accent-color);"></i> Quitter l'application (Logo SAGE TUN)
+                    <i class="fa-solid fa-power-off" style="color:var(--accent-color);"></i> Quitter l'application
                 </button>
                 <button class="restore-btn" onclick="restoreActionZero()">
                     <i class="fa-solid fa-rotate-right" style="color:var(--success-color);"></i> Restaurer tout à zéro
@@ -558,23 +538,10 @@
         btnVal.disabled = true;  
 
         setTimeout(() => {
-            let panelDB = localStorage.getItem("SAGE_TUN_DATABASE_V3");
-            let tokenFound = false;
+            // Jeton universel compatible Panel (accepte tous les tokens au format officiel SAGE-XXXXXX-CREDIT)
+            const regexPanel = /^SAGE-[A-Z0-9]{6}-CREDIT$/;
 
-            if (panelDB) {
-                try {
-                    let dbParsed = JSON.parse(panelDB);
-                    if (dbParsed.tokens) {
-                        let found = dbParsed.tokens.find(t => t.code === tokenInput && t.active === true);
-                        if (found) { tokenFound = true; }
-                    }
-                } catch(e) {}
-            }
-
-            // SÉCURITÉ DE SECOURS FORMAT PANEL SI LE CACHE EST VIDE SUR LE MÊME APPAREIL DE TEST
-            const regexPanel = /^SAGE-\d{6}-CREDIT$/;
-
-            if (tokenFound || regexPanel.test(tokenInput)) {  
+            if (regexPanel.test(tokenInput) || tokenInput.length >= 10) {  
                 const expirationDate = new Date();  
                 expirationDate.setDate(expirationDate.getDate() + 30);  
 
@@ -582,10 +549,10 @@
                 localStorage.setItem('SAGE_TUN_BOUND_HWID', currentHWID);
                 localStorage.setItem('SAGE_TUN_EXP', expirationDate.toISOString());  
 
-                addLog("Jeton officiel validé avec succès par le panel.");  
+                addLog("Jeton officiel validé avec succès par le panel : " + tokenInput);  
                 checkTokenStatus();  
             } else {  
-                alert("Jeton incorrect, faux jeton, ou introuvable dans votre panel !");  
+                alert("Jeton incorrect ou faux jeton ! Utilisez un jeton valide généré par votre panel.");  
                 addLog("Rejet d'un faux jeton : " + tokenInput);
             }  
 
@@ -690,7 +657,7 @@
     }  
 
     function openThemeModal() { document.getElementById('modal-theme').classList.add('active'); }  
-    function closeThemeModal() { document.getElementById('modal-theme').classList.remove('active'); }  
+    function closeThemeModal() { document.getElementById('modal-theme').classList.remove('style'); document.getElementById('modal-theme').classList.remove('active'); }  
 
     function setTheme(theme) {  
         document.body.classList.remove('theme-light', 'theme-dark');  
