@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SAGE TUN</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -41,6 +41,8 @@
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             -webkit-tap-highlight-color: transparent;
+            /* Empêche le rebond et le comportement de site web mobile */
+            overscroll-behavior-y: none;
         }
 
         body {
@@ -49,22 +51,23 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            height: 100vh;
+            width: 100vw;
             overflow: hidden;
+            position: fixed;
         }
 
         .app-container {
             width: 100%;
             max-width: 420px;
-            height: 100vh;
-            max-height: 850px;
+            height: 100%;
+            max-height: 100vh;
             background: var(--bg-color);
             position: relative;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
-            border-radius: 12px;
         }
 
         .cloud-bg {
@@ -270,7 +273,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 15px;
-            overflow-y: auto;
+            overflow-y: hidden;
             position: relative;
             z-index: 10;
         }
@@ -379,16 +382,16 @@
 <div class="app-container">
     <div class="cloud-bg"></div>
 
-    <!-- OVERLAY DE JETON VÉRIFIÉ PAR LE PANEL -->
+    <!-- OVERLAY DE JETON STRICTEMENT RELIÉ AU PANEL -->
     <div id="token-overlay">
         <div class="stars-container" id="stars-container"></div>
         <div class="token-content-box">
             <i class="fa-solid fa-shield-halved" style="font-size: 50px; color: var(--accent-color); margin-bottom: 15px;"></i>
             <h2>ACTIVATION SAGE TUN</h2>
-            <p>Entrez votre jeton officiel généré par votre panel. Les faux jetons seront rejetés.</p>
+            <p>Seuls les vrais jetons générés par votre panel officiel sont acceptés.</p>
               
             <input type="text" id="token-input" class="token-input" placeholder="SAGE-XXXXXX-CREDIT" autocomplete="off">  
-            <button class="btn-validate" id="btn-val" onclick="validateTokenFromPanel()">VALIDER LE JETON</button>
+            <button class="btn-validate" id="btn-val" onclick="validateTokenStrict()">VALIDER LE JETON</button>
 
             <div class="device-info-box">  
                 <span class="device-info-title">ID UNIQUE APPAREIL (HWID) :</span>  
@@ -495,8 +498,9 @@
                 </div>  
             </div>  
 
+            <!-- FORMAT DEMANDÉ : Expiration du jeton : { SAGE-••••••-CREDIT } -->
             <div class="expiration-box">  
-                Expiration du jeton : <span id="exp-date">Non activé</span>  
+                Expiration du jeton : <span id="exp-date">{ SAGE-••••••-CREDIT }</span>  
             </div>  
 
             <button class="btn-journal-trigger" onclick="openJournal()">  
@@ -603,7 +607,7 @@
     function openJournal() { document.getElementById('modal-journal').classList.add('active'); }  
     function closeJournal() { document.getElementById('modal-journal').classList.remove('active'); }  
 
-    // CONNEXION RÉELLE AVEC LA BASE DE DONNÉES DU PANEL (STOCKAGE LOCAL PARTAGÉ OU SYNCHRONISÉ)
+    // VÉRIFICATION STRICTE DIRECTE DE LA BASE DE DONNÉES DU PANEL
     function checkTokenStatus() {  
         const savedToken = localStorage.getItem('SAGE_TUN_TOKEN');  
         const savedHwid = localStorage.getItem('SAGE_TUN_BOUND_HWID');
@@ -618,14 +622,14 @@
                 document.getElementById('token-overlay').style.display = 'flex';  
             } else {  
                 document.getElementById('token-overlay').style.display = 'none';
-                document.getElementById('exp-date').innerText = expDate.toLocaleDateString('fr-FR') + " (SAGE-••••••-CREDIT)";  
+                document.getElementById('exp-date').innerText = "{ SAGE-••••••-CREDIT }";  
             }  
         } else {  
             document.getElementById('token-overlay').style.display = 'flex';  
         }  
     }  
 
-    function validateTokenFromPanel() {  
+    function validateTokenStrict() {  
         const tokenInput = document.getElementById('token-input').value.trim().toUpperCase();  
         const btnVal = document.getElementById('btn-val');  
 
@@ -634,32 +638,29 @@
             return;  
         }  
 
-        btnVal.innerText = "VÉRIFICATION...";  
+        btnVal.innerText = "VÉRIFICATION PANEL...";  
         btnVal.disabled = true;  
 
         setTimeout(() => {
-            // Lecture de la base de données du Panel enregistrée dans le navigateur (SAGE_TUN_DATABASE_V3)
+            // Lecture directe de la base de données de votre Panel (SAGE_TUN_DATABASE_V3)
             let panelDB = localStorage.getItem("SAGE_TUN_DATABASE_V3");
-            let isValid = false;
-            let tokenFound = null;
+            let tokenFound = false;
 
             if (panelDB) {
                 try {
                     let dbParsed = JSON.parse(panelDB);
                     if (dbParsed.tokens) {
-                        // Cherche le jeton exact dans la liste générée par le panel
-                        tokenFound = dbParsed.tokens.find(t => t.code === tokenInput);
-                        if (tokenFound && tokenFound.active) {
-                            isValid = true;
+                        // Cherche si le jeton existe et est actif dans le panel
+                        let found = dbParsed.tokens.find(t => t.code === tokenInput && t.active === true);
+                        if (found) {
+                            tokenFound = true;
                         }
                     }
                 } catch(e) {}
             }
 
-            // Fallback de sécurité stricte si le panel n'est pas sur le même cache navigateur, on exige le format exact
-            const regexStrict = /^SAGE-\d{6}-CREDIT$/;
-
-            if (isValid || regexStrict.test(tokenInput)) {
+            // SÉCURITÉ ABSOLUE : Si le jeton n'existe pas dans le panel, on bloque catégoriquement
+            if (tokenFound) {
                 const expirationDate = new Date();  
                 expirationDate.setDate(expirationDate.getDate() + 30);  
 
@@ -667,16 +668,16 @@
                 localStorage.setItem('SAGE_TUN_BOUND_HWID', currentHWID);
                 localStorage.setItem('SAGE_TUN_EXP', expirationDate.toISOString());  
 
-                addLog("Jeton officiel validé et lié à l'appareil.");  
+                addLog("Jeton officiel validé et enregistré pour cet appareil.");  
                 checkTokenStatus();  
             } else {  
-                alert("Jeton incorrect, expiré, ou non généré par votre panel !");  
-                addLog("Tentative de jeton invalide rejetée : " + tokenInput);
+                alert("Jeton invalide, faux jeton, ou jeton introuvable dans votre panel !");  
+                addLog("Tentative de faux jeton rejetée : " + tokenInput);
             }
 
             btnVal.innerText = "VALIDER LE JETON";  
             btnVal.disabled = false;  
-        }, 600);
+        }, 500);
     }  
 
     function openDrawer() { document.getElementById('drawer').classList.add('active'); document.getElementById('backdrop').classList.add('active'); }  
