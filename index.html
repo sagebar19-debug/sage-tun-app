@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sage Tun - Client VPN</title>
+    <title>Sage Tun - Authentification</title>
     <style>
         * {
             box-sizing: border-box;
@@ -169,35 +169,6 @@
             cursor: pointer;
         }
 
-        .btn-success {
-            width: 100%;
-            padding: 12px;
-            background: #22c55e;
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        /* Dashboard VPN caché au départ */
-        #vpnDashboard {
-            display: none;
-            text-align: center;
-        }
-
-        .status-badge {
-            background: rgba(34, 197, 94, 0.1);
-            color: #22c55e;
-            border: 1px solid #22c55e;
-            padding: 8px;
-            border-radius: 8px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            font-size: 0.85rem;
-        }
-
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             20%, 60% { transform: translateX(-12px); }
@@ -228,15 +199,14 @@
         <div class="sage-text t6">SAGE TUN</div>
     </div>
 
-    <!-- 1. SECTION AUTHENTIFICATION -->
-    <div class="modal-card" id="authCard">
+    <div class="modal-card" id="modalCard">
         <div class="modal-header">
             <div class="modal-icon">🔑</div>
             <h3>BIENVENUE CHEZ SAGE TUN</h3>
         </div>
         
         <p id="modalMessage" class="modal-message">
-            Veuillez saisir votre jeton d'accès fourni par le panel.
+            Veuillez saisir votre jeton d'accès fourni par l'admin.
         </p>
 
         <div class="hwid-container">
@@ -254,33 +224,7 @@
         <button class="btn-primary" onclick="validerJeton()">Valider le jeton</button>
     </div>
 
-    <!-- 2. SECTION TABLEAU DE BORD VPN (S'affiche après validation) -->
-    <div class="modal-card" id="vpnDashboard">
-        <div class="modal-header">
-            <div class="modal-icon">🚀</div>
-            <h3>SAGE TUN - CLIENT CONNECTÉ</h3>
-        </div>
-        
-        <div class="status-badge">🟢 Jeton VIP Actif & Vérifié</div>
-
-        <p class="modal-message" style="margin-bottom: 20px;">
-            Votre tunnel est prêt à être lancé. Appuyez sur le bouton ci-dessous pour vous connecter au serveur haute vitesse.
-        </p>
-
-        <button class="btn-success" onclick="connecterVPN()" style="margin-bottom: 10px;">CONNECTER LE VPN</button>
-        <button class="btn-copy" onclick="deconnecter()" style="width: 100%; padding: 10px; background: #334155;">Changer de jeton</button>
-    </div>
-
     <script>
-        window.onload = function() {
-            document.getElementById("displayHWID").textContent = getHWID();
-            // Vérifier si un jeton était déjà validé auparavant
-            if(localStorage.getItem("user_token")) {
-                document.getElementById("authCard").style.display = "none";
-                document.getElementById("vpnDashboard").style.display = "block";
-            }
-        };
-
         function getHWID() {
             let hwid = localStorage.getItem("device_hwid");
             if (!hwid) {
@@ -289,6 +233,8 @@
             }
             return hwid;
         }
+
+        document.getElementById("displayHWID").textContent = getHWID();
 
         function jouerSon() {
             try {
@@ -314,42 +260,25 @@
                 return;
             }
 
-            // Vérification du format exact du jeton généré par le panel
+            // Validation exacte du format de vos jetons générés par le panel
             const regexJetonPanel = /^SAGE-\d{6}-CREDIT$/;
 
             if (regexJetonPanel.test(token)) {
                 localStorage.setItem("user_token", token);
                 
-                const card = document.getElementById("authCard");
+                const card = document.getElementById("modalCard");
                 card.style.borderColor = "#22c55e";
-                document.getElementById("modalMessage").textContent = "Jeton validé avec succès !";
+                document.getElementById("modalMessage").textContent = "Jeton valide ! Accès accordé.";
                 document.getElementById("modalMessage").style.color = "#22c55e";
 
-                setTimeout(() => {
-                    document.getElementById("authCard").style.display = "none";
-                    document.getElementById("vpnDashboard").style.display = "block";
-                }, 500);
+                // Plus aucune fenêtre d'alerte gênante : votre interface reste propre et fluide
             } else {
                 declencherErreur("Jeton incorrect ou non reconnu par le panel !");
             }
         }
 
-        function connecterVPN() {
-            alert("Connexion au tunnel SAGE TUN établie avec succès ! Bon surf.");
-        }
-
-        function deconnecter() {
-            localStorage.removeItem("user_token");
-            document.getElementById("vpnDashboard").style.display = "none";
-            document.getElementById("authCard").style.display = "block";
-            document.getElementById("tokenInput").value = "";
-            document.getElementById("modalMessage").textContent = "Veuillez saisir votre jeton d'accès fourni par le panel.";
-            document.getElementById("modalMessage").style.color = "#94a3b8";
-            document.getElementById("authCard").style.borderColor = "#3b82f6";
-        }
-
         function declencherErreur(msg) {
-            const card = document.getElementById("authCard");
+            const card = document.getElementById("modalCard");
             const input = document.getElementById("tokenInput");
             document.getElementById("modalMessage").textContent = msg;
 
