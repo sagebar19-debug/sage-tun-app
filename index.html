@@ -3,20 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
     <title>SAGE TUN</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --bg-color: linear-gradient(180deg, #57a0d3 0%, #204060 40%, #0b0f19 80%, #000000 100%);
-            --card-bg: rgba(21, 28, 44, 0.9);
+            --card-bg: rgba(21, 28, 44, 0.85);
             --accent-color: #00d2ff;
             --text-color: #ffffff;
             --text-dim: #a0b2c6;
             --danger-color: #ff4757;
             --success-color: #2ed573;
             --input-bg: rgba(24, 34, 52, 0.9);
+        }
+
+        body.theme-light {
+            --bg-color: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 40%, #f0f3f8 100%);
+            --card-bg: #ffffff;
+            --accent-color: #0072ff;
+            --text-color: #1a202c;
+            --text-dim: #718096;
+            --input-bg: #e2e8f0;
+        }
+
+        body.theme-dark {
+            --bg-color: #0b0f19;
+            --card-bg: #151c2c;
+            --accent-color: #00d2ff;
+            --text-color: #ffffff;
+            --text-dim: #8a99ad;
+            --input-bg: #182234;
         }
 
         * {
@@ -55,11 +71,12 @@
 
         .cloud-bg {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 180px;
-            pointer-events: none; z-index: 1; opacity: 0.3;
+            top: 0; left: 0; width: 100%; height: 220px;
+            pointer-events: none; z-index: 1; opacity: 0.35;
             background: 
                 radial-gradient(circle at 20% 30px, rgba(255, 255, 255, 0.8) 0%, transparent 50px),
-                radial-gradient(circle at 50% 20px, rgba(255, 255, 255, 0.9) 0%, transparent 65px);
+                radial-gradient(circle at 50% 20px, rgba(255, 255, 255, 0.9) 0%, transparent 65px),
+                radial-gradient(circle at 80% 40px, rgba(255, 255, 255, 0.7) 0%, transparent 55px);
             filter: blur(12px);
         }
 
@@ -69,7 +86,7 @@
             background: radial-gradient(circle at center, #0f172a 0%, #030712 100%);
             z-index: 1000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            padding: 20px; text-align: center; overflow: hidden;
+            padding: 25px; text-align: center; overflow: hidden;
         }
 
         .stars-container {
@@ -96,7 +113,7 @@
         }
 
         #token-overlay p {
-            font-size: 12px; color: var(--text-dim); margin-bottom: 15px; line-height: 1.4;
+            font-size: 12px; color: var(--text-dim); margin-bottom: 20px; line-height: 1.4;
         }
 
         .token-input {
@@ -113,113 +130,115 @@
         }
 
         .device-info-box {
-            width: 100%; margin-top: 15px; padding: 10px;
+            width: 100%; margin-top: 20px; padding: 12px;
             background: rgba(24, 34, 52, 0.8); border: 1px dashed var(--accent-color);
-            border-radius: 10px; display: flex; flex-direction: column; align-items: center; gap: 4px;
+            border-radius: 10px; display: flex; flex-direction: column; align-items: center; gap: 6px;
         }
-        .device-info-title { font-size: 10px; color: var(--text-dim); text-transform: uppercase; }
-        .device-id-code { font-size: 12px; font-weight: bold; color: var(--accent-color); font-family: monospace; }
+        .device-info-title { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .device-id-code { font-size: 13px; font-weight: bold; color: var(--accent-color); font-family: monospace; }
         .btn-copy-id {
             background: transparent; border: 1px solid var(--accent-color); color: var(--accent-color);
-            padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px;
+            padding: 5px 10px; border-radius: 6px; font-size: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px;
         }
 
         header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 12px 18px; background: transparent; position: relative; z-index: 10;
+            padding: 15px 20px; background: transparent; position: relative; z-index: 10;
         }
         header .title {
-            font-size: 20px; font-weight: 900; letter-spacing: 2px;
+            font-size: 22px; font-weight: 900; letter-spacing: 2px;
             background: linear-gradient(90deg, #ffffff, #00d2ff, #ffffff);
             background-size: 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        header i { font-size: 18px; cursor: pointer; color: var(--text-color); }
+        header i { font-size: 20px; cursor: pointer; color: var(--text-color); }
 
         .drawer {
             position: absolute; top: 0; left: -100%; width: 80%; height: 100%;
             background: #151c2c; z-index: 500; transition: left 0.3s ease;
-            padding: 20px; display: flex; flex-direction: column; gap: 12px;
+            padding: 25px 20px; display: flex; flex-direction: column; gap: 14px;
             box-shadow: 5px 0 25px rgba(0, 0, 0, 0.7); overflow-y: auto;
         }
         .drawer.active { left: 0; }
 
-        .rainbow-title { font-size: 20px; font-weight: 900; text-align: center; color: #00d2ff; }
-        .rainbow-subtitle { font-size: 12px; font-weight: 800; text-align: center; letter-spacing: 3px; color: #ff0055; margin-bottom: 5px; }
+        .rainbow-title { font-size: 22px; font-weight: 900; text-align: center; color: #00d2ff; }
+        .rainbow-subtitle { font-size: 13px; font-weight: 800; text-align: center; letter-spacing: 3px; color: #ff0055; margin-bottom: 5px; }
 
         .menu-item {
-            display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+            display: flex; align-items: center; gap: 12px; padding: 12px 15px;
             background: var(--input-bg); border-radius: 8px; color: var(--text-color);
-            text-decoration: none; font-size: 12px; cursor: pointer;
+            text-decoration: none; font-size: 13px; cursor: pointer;
         }
-        .menu-item i { font-size: 14px; color: var(--accent-color); width: 18px; text-align: center; }
+        .menu-item i { font-size: 15px; color: var(--accent-color); width: 20px; text-align: center; }
 
         main {
-            flex: 1; padding: 10px 15px; display: flex; flex-direction: column;
-            justify-content: space-between; gap: 8px; overflow-y: auto; position: relative; z-index: 10;
+            flex: 1; padding: 15px; display: flex; flex-direction: column;
+            align-items: center; justify-content: space-between; gap: 12px; overflow-y: hidden; position: relative; z-index: 10;
         }
 
-        .vpn-button-container { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .vpn-button-container { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 
+        /* GROS BOUTON CENTRAL BIEN VISIBLE AU MILIEU */
         .vpn-btn {
-            width: 120px; height: 120px; border-radius: 50%; background: var(--card-bg);
-            border: 5px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column;
-            justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            width: 140px; height: 140px; border-radius: 50%; background: var(--card-bg);
+            border: 6px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column;
+            justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 0 25px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
         }
-        .vpn-btn i { font-size: 36px; color: var(--text-dim); }
-        .vpn-btn span { font-size: 10px; margin-top: 5px; font-weight: 800; color: var(--text-dim); }
-        .vpn-btn.connected { border-color: var(--success-color); box-shadow: 0 0 30px rgba(46, 213, 115, 0.6); }
+        .vpn-btn i { font-size: 42px; color: var(--text-dim); }
+        .vpn-btn span { font-size: 11px; margin-top: 8px; font-weight: 800; color: var(--text-dim); }
+        .vpn-btn.connected { border-color: var(--success-color); box-shadow: 0 0 35px rgba(46, 213, 115, 0.6); }
         .vpn-btn.connected i, .vpn-btn.connected span { color: var(--success-color); }
 
         .timer-box {
-            font-size: 12px; font-weight: 700; color: var(--text-dim); background: var(--card-bg);
-            padding: 3px 10px; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.08); display: flex; align-items: center; gap: 6px;
+            font-size: 14px; font-weight: 700; color: var(--text-dim); background: var(--card-bg);
+            padding: 5px 15px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.08); display: flex; align-items: center; gap: 8px;
         }
         .timer-box.active { color: var(--success-color); border-color: rgba(46, 213, 115, 0.3); }
 
         .stats-card {
-            width: 100%; background: var(--card-bg); border-radius: 10px;
-            padding: 8px 12px; display: flex; justify-content: space-around; align-items: center;
+            width: 100%; background: var(--card-bg); border-radius: 12px;
+            padding: 12px 18px; display: flex; justify-content: space-around; align-items: center;
         }
-        .stat-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-        .stat-title.down { color: #00d2ff; font-size: 11px; }
-        .stat-title.up { color: #2ed573; font-size: 11px; }
-        .stat-value { font-size: 12px; font-weight: bold; font-family: monospace; }
+        .stat-item { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .stat-title.down { color: #00d2ff; font-size: 12px; }
+        .stat-title.up { color: #2ed573; font-size: 12px; }
+        .stat-value { font-size: 13px; font-weight: bold; font-family: monospace; }
         .stat-value.down { color: #00d2ff; }
         .stat-value.up { color: #2ed573; }
 
-        .bottom-section { width: 100%; display: flex; flex-direction: column; gap: 6px; }
+        .bottom-section { width: 100%; display: flex; flex-direction: column; gap: 10px; }
 
         .protocol-wrapper {
-            width: 100%; background: var(--card-bg); border-radius: 8px; overflow: hidden;
+            width: 100%; background: var(--card-bg); border-radius: 10px; overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .protocol-header {
-            text-align: center; font-size: 11px; font-weight: bold; color: var(--accent-color);
-            padding: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            text-align: center; font-size: 13px; font-weight: bold; color: var(--accent-color);
+            padding: 12px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
         }
-        .protocol-options { display: none; flex-direction: column; gap: 4px; padding: 0 6px 6px 6px; }
+        .protocol-options { display: none; flex-direction: column; gap: 6px; padding: 0 10px 10px 10px; }
         .protocol-wrapper.open .protocol-options { display: flex; }
 
         .proto-bubble {
             display: flex; align-items: center; justify-content: space-between;
-            background: var(--input-bg); padding: 6px 10px; border-radius: 15px; border: 1.5px solid transparent; cursor: pointer;
+            background: var(--input-bg); padding: 10px 12px; border-radius: 20px; border: 1.5px solid transparent; cursor: pointer;
         }
         .proto-bubble.selected { border-color: var(--accent-color); }
-        .proto-title { font-size: 10px; font-weight: 600; }
-        .radio-dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--text-dim); display: flex; align-items: center; justify-content: center; }
+        .proto-title { font-size: 12px; font-weight: 600; }
+        .radio-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--text-dim); display: flex; align-items: center; justify-content: center; }
         .proto-bubble.selected .radio-dot { border-color: var(--accent-color); }
-        .proto-bubble.selected .radio-dot::after { content: ''; width: 4px; height: 4px; background: var(--accent-color); border-radius: 50%; }
+        .proto-bubble.selected .radio-dot::after { content: ''; width: 6px; height: 6px; background: var(--accent-color); border-radius: 50%; }
 
         .expiration-box {
-            width: 100%; background: var(--card-bg); padding: 6px; border-radius: 6px;
-            text-align: center; font-size: 11px; color: var(--text-dim);
+            width: 100%; background: var(--card-bg); padding: 10px; border-radius: 8px;
+            text-align: center; font-size: 12px; color: var(--text-dim);
         }
         .expiration-box span { color: var(--text-color); font-weight: bold; }
 
         .btn-journal-trigger {
-            width: 100%; padding: 8px; background: var(--card-bg); border: 1px solid var(--accent-color);
-            border-radius: 6px; color: var(--accent-color); font-weight: bold; font-size: 11px;
-            display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer;
+            width: 100%; padding: 10px; background: var(--card-bg); border: 1px solid var(--accent-color);
+            border-radius: 8px; color: var(--accent-color); font-weight: bold; font-size: 12px;
+            display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
         }
 
         .modal-journal, .modal-settings, .modal-restore, .loading-modal {
@@ -230,25 +249,25 @@
 
         .modal-content {
             background: #000000; border-top-left-radius: 16px; border-top-right-radius: 16px;
-            height: 55%; width: 100%; padding: 15px; display: flex; flex-direction: column; gap: 8px; border-top: 2px solid var(--accent-color);
+            height: 60%; width: 100%; padding: 15px; display: flex; flex-direction: column; gap: 10px; border-top: 2px solid var(--accent-color);
             position: absolute; bottom: 0;
         }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; color: var(--accent-color); font-weight: bold; font-size: 12px; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; color: var(--accent-color); font-weight: bold; font-size: 13px; }
         .journal-box { flex: 1; font-family: monospace; font-size: 11px; color: #2ed573; overflow-y: auto; line-height: 1.4; }
-        .log-entry { margin-bottom: 3px; word-break: break-all; }
+        .log-entry { margin-bottom: 4px; word-break: break-all; }
 
-        .settings-card { background: #151c2c; width: 90%; max-width: 330px; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
-        .settings-card h3 { color: var(--accent-color); font-size: 14px; text-align: center; }
-        .theme-options, .restore-options { display: flex; flex-direction: column; gap: 8px; }
+        .settings-card { background: #151c2c; width: 90%; max-width: 350px; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+        .settings-card h3 { color: var(--accent-color); font-size: 15px; text-align: center; }
+        .theme-options, .restore-options { display: flex; flex-direction: column; gap: 10px; }
         .theme-btn, .restore-btn {
             padding: 10px; border-radius: 8px; border: 1px solid var(--text-dim);
-            background: var(--input-bg); color: var(--text-color); font-weight: bold; cursor: pointer; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px;
+            background: var(--input-bg); color: var(--text-color); font-weight: bold; cursor: pointer; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px;
         }
 
         .spinner {
-            width: 38px; height: 38px; border: 4px solid rgba(0, 210, 255, 0.2);
+            width: 45px; height: 45px; border: 4px solid rgba(0, 210, 255, 0.2);
             border-top: 4px solid var(--accent-color); border-radius: 50%;
-            animation: spin 0.8s linear infinite; margin-bottom: 10px;
+            animation: spin 0.8s linear infinite; margin-bottom: 15px;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
@@ -261,11 +280,11 @@
 <div class="app-container">
     <div class="cloud-bg"></div>
 
-    <!-- OVERLAY DE JETON PANEL -->
+    <!-- OVERLAY DE JETON STRICT PANEL (REFUSE LES FAUX JETONS) -->
     <div id="token-overlay">
         <div class="stars-container" id="stars-container"></div>
         <div class="token-content-box">
-            <i class="fa-solid fa-shield-halved" style="font-size: 38px; color: var(--accent-color); margin-bottom: 10px;"></i>
+            <i class="fa-solid fa-shield-halved" style="font-size: 45px; color: var(--accent-color); margin-bottom: 12px;"></i>
             <h2>ACTIVATION SAGE TUN</h2>
             <p>Seuls les vrais jetons générés par votre panel officiel sont acceptés.</p>
               
@@ -285,8 +304,8 @@
     <!-- SPINNER DE MISE À JOUR -->
     <div class="loading-modal" id="loading-modal">
         <div class="spinner"></div>
-        <div style="color: var(--accent-color); font-weight: bold; font-size: 13px; letter-spacing: 1px;">MISE À JOUR AUTOMATIQUE...</div>
-        <div style="color: var(--text-dim); font-size: 11px; margin-top: 4px;">Vérification des serveurs Xray & SSH...</div>
+        <div style="color: var(--accent-color); font-weight: bold; font-size: 14px; letter-spacing: 1px;">MISE À JOUR AUTOMATIQUE...</div>
+        <div style="color: var(--text-dim); font-size: 11px; margin-top: 5px;">Vérification des serveurs Xray & SSH...</div>
     </div>
 
     <!-- TIROIR LATÉRAL (DRAWER) -->
@@ -320,20 +339,20 @@
             <span>Contacter l'administrateur</span>  
         </a>
 
-        <div style="margin-top: 8px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px;">
+        <div style="margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
             <span style="font-size: 10px; color: var(--text-dim); display:block; line-height:1.4;">
                 Créé par V.G-SaGe (KOSHIBAR) le 27-09-2026.<br>
                 Pour toute application similaire, contacter Monsieur Koshibar.
             </span>
         </div>
 
-        <div style="margin-top: 4px;">  
-            <span style="font-size: 10px; color: var(--text-dim);">ID APPAREIL (HWID) :</span>  
-            <div style="background: rgba(0,0,0,0.4); padding: 6px; border-radius: 6px; border: 1px dashed var(--accent-color); font-size: 10px; word-break: break-all; color: var(--text-dim); margin-top: 3px;" id="device-id">CHARGEMENT...</div>  
+        <div style="margin-top: 5px;">  
+            <span style="font-size: 11px; color: var(--text-dim);">ID APPAREIL (HWID) :</span>  
+            <div style="background: rgba(0,0,0,0.4); padding: 8px; border-radius: 6px; border: 1px dashed var(--accent-color); font-size: 10px; word-break: break-all; color: var(--text-dim); margin-top: 4px;" id="device-id">CHARGEMENT...</div>  
         </div>  
     </div>
 
-    <!-- EN-TÊTE -->
+    <!-- EN-TÊTE PROPRE -->
     <header>  
         <i class="fa-solid fa-bars" onclick="openDrawer()"></i>  
         <div class="title">SAGE TUN</div>  
@@ -440,7 +459,7 @@
 <script>
     function createStars() {
         const container = document.getElementById('stars-container');
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 35; i++) {
             const star = document.createElement('div');
             star.className = 'star';
             star.style.top = Math.random() * 100 + '%';
@@ -525,6 +544,7 @@
         }  
     }  
 
+    // VÉRIFICATION STRICTE DU PANEL : REJETTE TOUT FAUX JETON SANS LE FORMAT EXACT DU PANEL
     function validateTokenStrict() {  
         const tokenInput = document.getElementById('token-input').value.trim().toUpperCase();  
         const btnVal = document.getElementById('btn-val');  
@@ -538,10 +558,25 @@
         btnVal.disabled = true;  
 
         setTimeout(() => {
-            // Jeton universel compatible Panel (accepte tous les tokens au format officiel SAGE-XXXXXX-CREDIT)
-            const regexPanel = /^SAGE-[A-Z0-9]{6}-CREDIT$/;
+            // Lecture stricte de la base de données du panel
+            let panelDB = localStorage.getItem("SAGE_TUN_DATABASE_V3");
+            let tokenFound = false;
 
-            if (regexPanel.test(tokenInput) || tokenInput.length >= 10) {  
+            if (panelDB) {
+                try {
+                    let dbParsed = JSON.parse(panelDB);
+                    if (dbParsed.tokens) {
+                        let found = dbParsed.tokens.find(t => t.code === tokenInput && t.active === true);
+                        if (found) { tokenFound = true; }
+                    }
+                } catch(e) {}
+            }
+
+            // Exigence stricte : Le jeton DOIT provenir du panel ou correspondre au format exact généré par ton panel officiel
+            // Si le jeton ne respecte pas le format strict du panel, il est rejeté instantanément.
+            const strictPanelRegex = /^SAGE-[A-Z0-9]{6}-CREDIT$/;
+
+            if (tokenFound || strictPanelRegex.test(tokenInput)) {  
                 const expirationDate = new Date();  
                 expirationDate.setDate(expirationDate.getDate() + 30);  
 
@@ -552,13 +587,13 @@
                 addLog("Jeton officiel validé avec succès par le panel : " + tokenInput);  
                 checkTokenStatus();  
             } else {  
-                alert("Jeton incorrect ou faux jeton ! Utilisez un jeton valide généré par votre panel.");  
-                addLog("Rejet d'un faux jeton : " + tokenInput);
+                alert("Jeton incorrect, faux jeton ou introuvable dans votre panel ! Accès refusé.");  
+                addLog("Rejet strict d'un faux jeton : " + tokenInput);
             }  
 
             btnVal.innerText = "VALIDER LE JETON";  
             btnVal.disabled = false;  
-        }, 500);
+        }, 600);
     }  
 
     function openDrawer() { document.getElementById('drawer').classList.add('active'); document.getElementById('backdrop').classList.add('active'); }  
@@ -645,7 +680,7 @@
                 addLog("Tunnel VPN établi avec succès !");  
                 startTimer();  
                 startStatsSimulation();  
-            }, 1000);  
+            }, 1200);  
         } else {  
             isConnected = false;  
             btn.classList.remove('connected');  
@@ -657,7 +692,7 @@
     }  
 
     function openThemeModal() { document.getElementById('modal-theme').classList.add('active'); }  
-    function closeThemeModal() { document.getElementById('modal-theme').classList.remove('style'); document.getElementById('modal-theme').classList.remove('active'); }  
+    function closeThemeModal() { document.getElementById('modal-theme').classList.remove('active'); }  
 
     function setTheme(theme) {  
         document.body.classList.remove('theme-light', 'theme-dark');  
@@ -698,7 +733,7 @@
             loadingModal.classList.remove('active');
             addLog("Serveurs actualisés avec succès !");
             alert("Nouveaux serveurs chargés avec succès !");
-        }, 1200);
+        }, 1500);
     }  
 
     function actionSpeedTest() {  
